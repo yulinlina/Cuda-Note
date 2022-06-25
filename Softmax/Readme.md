@@ -16,3 +16,5 @@ Mnist 数据集
 
 ### 梯度计算
 
+### 结果
+![结果](https://raw.githubusercontent.com/yulinlina/cudaNote/main/Softmax/gpu%E7%BB%93%E6%9E%9C.png)
