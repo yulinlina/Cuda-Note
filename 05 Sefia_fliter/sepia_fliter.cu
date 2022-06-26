@@ -13,22 +13,27 @@
 
 void rgb_to_sepia_cpu(unsigned char *input_image, unsigned char *output_image, int width, int height, int channels)
 {
-    for(int row=0; row<height; row++)
-    {
-        for(int col=0; col<width; col++)
-        {
-            int offset = (row*width + col)*channels;
-            unsigned char c1 = input_image[offset];
-            unsigned char c2 = input_image[offset+1];
-            unsigned char c3 = input_image[offset+2];
-
-            *(output_image + offset) = (unsigned char)fmin((c1 * 0.393 + c2 * 0.769 + c3 * 0.189), 255.0);
-			*(output_image + offset + 1) = (unsigned char)fmin((c1 * 0.349 + c2 * 0.686 + c3 * 0.168), 255.0);
-			*(output_image + offset + 2) = (unsigned char)fmin((c1 * 0.272 + c2 * 0.534 + c3 * 0.131), 255.0);
-
-            if(channels==4)
-            {
-                *(output_image + offset + 3) = input_image[offset + 3];
+    for(int col = 0; col < w; ++col) {
+        for(int row = 0; row < h; ++row) {
+            int pixVal[3] = {0, 0, 0};
+            int pixels = 0;
+            // Get the average
+            int offset = (row * w + col) * channels;
+            for(int blurRow = -blur_size; blurRow <= blur_size; ++blurRow) {
+                for(int blurCol = -blur_size; blurCol <= blur_size; ++blurCol) {
+                    int curRow = row + blurRow;
+                    int curCol = col + blurCol;
+                    int curOffset = (curRow * w + curCol) * channels;
+                    if(curRow > -1 && curRow < h && curCol > -1 && curCol < w) {
+                        pixels++;
+                        for(int c=0; c<3; ++c) {
+                            pixVal[c] += in[curOffset + c];
+                        }
+                    }
+                }
+            }
+            for(int c=0; c<3; ++c) {
+                out[offset + c] = (unsigned char)(pixVal[c] / pixels);
             }
         }
     }
