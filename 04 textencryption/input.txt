@@ -1,0 +1,12 @@
+Local memory accesses only occur for some automatic variables as mentioned in Variable Memory Space Specifiers. Automatic variables that the compiler is likely to place in local memory are:
+
+Arrays for which it cannot determine that they are indexed with constant quantities,
+Large structures or arrays that would consume too much register space,
+Any variable if the kernel uses more registers than available (this is also known as register spilling).
+Inspection of the PTX assembly code (obtained by compiling with the -ptx or-keep option) will tell if a variable has been placed in local memory during the first compilation phases as it will be declared using the .local mnemonic and accessed using the ld.local and st.local mnemonics. Even if it has not, subsequent compilation phases might still decide otherwise though if they find it consumes too much register space for the targeted architecture: Inspection of the cubin object using cuobjdump will tell if this is the case. Also, the compiler reports total local memory usage per kernel (lmem) when compiling with the --ptxas-options=-v option. Note that some mathematical functions have implementation paths that might access local memory.
+
+The local memory space resides in device memory, so local memory accesses have the same high latency and low bandwidth as global memory accesses and are subject to the same requirements for memory coalescing as described in Device Memory Accesses. Local memory is however organized such that consecutive 32-bit words are accessed by consecutive thread IDs. Accesses are therefore fully coalesced as long as all threads in a warp access the same relative address (e.g., same index in an array variable, same member in a structure variable).
+
+On some devices of compute capability 3.x local memory accesses are always cached in L1 and L2 in the same way as global memory accesses (see Compute Capability 3.x).
+
+On devices of compute capability 5.x and 6.x, local memory accesses are always cached in L2 in the same way as global memory accesses (see Compute Capability 5.x and Compute Capability 6.x).
