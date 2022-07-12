@@ -17,9 +17,9 @@ Mnist 数据集
 ### 梯度计算
 
 ### 编译命令
-`gcc -o softmax softmax.cu -lm` 
+`gcc -o softmax softmax.cu -lm`   
 or
-
+`nvcc -o softmax_gpu softmax.cu --run`
 ### 运行命令
 `./softmax` 
 ### 结果
