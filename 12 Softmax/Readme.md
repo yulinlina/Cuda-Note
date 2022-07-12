@@ -16,5 +16,11 @@ Mnist 数据集
 
 ### 梯度计算
 
+### 编译命令
+`gcc -o softmax softmax.cu -lm` 
+or
+
+### 运行命令
+`./softmax` 
 ### 结果
 ![结果](https://raw.githubusercontent.com/yulinlina/Cuda-Note/main/12%20Softmax/gpu%E7%BB%93%E6%9E%9C.png)
