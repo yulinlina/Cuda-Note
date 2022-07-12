@@ -17,8 +17,12 @@ Mnist 数据集
 ### 梯度计算
 
 ### 编译命令
+如果使用纯C语言
+`gcc -o softmax softmax.c -lm` 
+
+如果使用cuda 加速
 `gcc -o softmax softmax.cu -lm`   
-or
+or  
 `nvcc -o softmax_gpu softmax.cu --run`
 ### 运行命令
 `./softmax` 
